@@ -38,9 +38,10 @@ export const questionsSlice = createSlice({
       state.status = Status.loading;
     },
     getQuestionsSuccess: (state, action: PayloadAction<Question[]>) => {
+      const questions = action.payload;
       state.status = Status.idle;
-      state.questions = action.payload;
-      state.questionsCount = action.payload.length;
+      state.questions = questions;
+      state.questionsCount = questions.length;
     },
     getQuestionsFail: (state, action: PayloadAction<string>) => {
       state.status = Status.error;
