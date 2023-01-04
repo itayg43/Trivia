@@ -1,5 +1,5 @@
 import axios from 'axios';
 
-export const openTriviaClient = axios.create({
+export default axios.create({
   baseURL: 'https://opentdb.com',
 });

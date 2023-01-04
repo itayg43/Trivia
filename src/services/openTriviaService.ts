@@ -1,5 +1,5 @@
 import {Question} from '../entities/Question';
-import {openTriviaClient} from '../clients/openTriviaClient';
+import openTriviaClient from '../clients/openTriviaClient';
 
 interface QuestionJSON {
   category: string;
@@ -17,9 +17,7 @@ interface QuestionsJSON {
 
 const DEFAULT_QUESTIONS_AMOUNT = 5;
 
-export const getQuestions = async (
-  amount: number = DEFAULT_QUESTIONS_AMOUNT,
-) => {
+const getQuestions = async (amount: number = DEFAULT_QUESTIONS_AMOUNT) => {
   const {data} = await openTriviaClient.get<QuestionsJSON>(
     `/api.php?amount=${amount}`,
   );
@@ -33,4 +31,8 @@ export const getQuestions = async (
         question.incorrect_answers,
       ),
   );
+};
+
+export default {
+  getQuestions,
 };

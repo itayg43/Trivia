@@ -10,12 +10,14 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.1",
     "@types/uuid": "^9.0.0",
     "axios": "^1.2.2",
     "html-entities": "^2.3.3",
     "react": "18.1.0",
     "react-native": "0.70.6",
     "react-native-get-random-values": "^1.8.0",
+    "react-redux": "^8.0.5",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
