@@ -3,40 +3,78 @@ import type {PayloadAction} from '@reduxjs/toolkit';
 
 import {Status} from '../../helpers/enums';
 import {Question} from '../../entities/Question';
+import {Answer} from '../../entities/Answer';
 
 interface QuestionsState {
   status: Status;
   errorMessage: string;
   currentQuestionIndex: number;
-  questions: Question[];
+  isAnswerSelected: boolean;
+  selectedAnswer: Answer | null;
+  isGameEnded: boolean;
+  correctAnswersCount: number;
+  questions: Question[] | null;
+  questionsCount: number;
 }
 
 const initialState: QuestionsState = {
   status: Status.idle,
   errorMessage: '',
   currentQuestionIndex: 0,
-  questions: [],
+  isAnswerSelected: false,
+  selectedAnswer: null,
+  isGameEnded: false,
+  correctAnswersCount: 0,
+  questions: null,
+  questionsCount: 0,
 };
 
 export const questionsSlice = createSlice({
   name: 'questions',
   initialState,
   reducers: {
+    // get questions
     getQuestions: state => {
       state.status = Status.loading;
     },
     getQuestionsSuccess: (state, action: PayloadAction<Question[]>) => {
       state.status = Status.idle;
       state.questions = action.payload;
+      state.questionsCount = action.payload.length;
     },
     getQuestionsFail: (state, action: PayloadAction<string>) => {
       state.status = Status.error;
       state.errorMessage = action.payload;
     },
+
+    // answer selection
+    answerSelection: (state, action: PayloadAction<Answer>) => {
+      const selectedAnswer = action.payload;
+      state.isAnswerSelected = true;
+      state.selectedAnswer = selectedAnswer;
+      state.correctAnswersCount = selectedAnswer.isCorrect
+        ? state.correctAnswersCount + 1
+        : state.correctAnswersCount;
+    },
+
+    // continue pressed
+    continuePressed: state => {
+      if (state.currentQuestionIndex + 1 < state.questionsCount) {
+        state.currentQuestionIndex += 1;
+        state.isAnswerSelected = false;
+      } else {
+        state.isGameEnded = true;
+      }
+    },
   },
 });
 
-export const {getQuestions, getQuestionsSuccess, getQuestionsFail} =
-  questionsSlice.actions;
+export const {
+  getQuestions,
+  getQuestionsSuccess,
+  getQuestionsFail,
+  answerSelection,
+  continuePressed,
+} = questionsSlice.actions;
 
 export default questionsSlice.reducer;

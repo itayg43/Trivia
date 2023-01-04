@@ -6,7 +6,7 @@ import {
 import openTriviaService from '../../../services/openTriviaService';
 import {AppDispatch} from '../../store';
 
-export default () => async (dispatch: AppDispatch) => {
+export const getQuestionsAsync = () => async (dispatch: AppDispatch) => {
   try {
     dispatch(getQuestions());
     const questions = await openTriviaService.getQuestions();
