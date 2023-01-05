@@ -1,5 +1,12 @@
 import React, {useCallback} from 'react';
-import {StyleSheet, View, FlatList, Text, Button} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  Text,
+  Button,
+  useWindowDimensions,
+} from 'react-native';
 import * as Progress from 'react-native-progress';
 
 import {useAppDispatch} from '../hooks/useAppDispatch';
@@ -11,9 +18,11 @@ import {
   selectQuestionsCount,
 } from '../redux/questions/questionsSelectors';
 import {continuePressed} from '../redux/questions/questionsSlice';
+import {capitalizeFirstLetter} from '../helpers/stringUtils';
 import AnswerView from './AnswerView';
 
 const GameView = () => {
+  const dimensions = useWindowDimensions();
   const dispatch = useAppDispatch();
 
   const currentQuestionIndex = useAppSelector(selectCurrentQuestionIndex);
@@ -31,8 +40,9 @@ const GameView = () => {
         <>
           {/** header */}
           <View style={styles.headerContainer}>
-            <Text>Trivia Game</Text>
-            <Text>
+            <Text style={styles.title}>Trivia Game</Text>
+
+            <Text style={styles.title}>
               {currentQuestionIndex + 1}/{questionsCount}
             </Text>
           </View>
@@ -41,12 +51,22 @@ const GameView = () => {
           <View style={styles.progressBarContainer}>
             <Progress.Bar
               progress={(currentQuestionIndex + 1) / questionsCount}
-              width={250}
+              width={dimensions.width / 1.1}
             />
           </View>
 
           {/** question */}
           <View style={styles.questionContainer}>
+            <View style={styles.questionMetadtaContainer}>
+              <Text>{questions[currentQuestionIndex].category}</Text>
+
+              <Text>
+                {capitalizeFirstLetter(
+                  questions[currentQuestionIndex].difficulty,
+                )}
+              </Text>
+            </View>
+
             <Text>{questions[currentQuestionIndex].value}</Text>
           </View>
 
@@ -82,19 +102,28 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  title: {
+    fontWeight: 'bold',
   },
 
   progressBarContainer: {
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 30,
   },
 
   questionContainer: {
-    marginTop: 20,
+    marginTop: 30,
+  },
+  questionMetadtaContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 30,
   },
 
   answersContainer: {
-    marginTop: 20,
+    marginTop: 30,
   },
 
   continueButtonContainer: {

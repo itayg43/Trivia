@@ -67,6 +67,14 @@ export const questionsSlice = createSlice({
         state.isGameEnded = true;
       }
     },
+
+    // reset state
+    resetState: state => {
+      state.isAnswerSelected = false;
+      state.isGameEnded = false;
+      state.currentQuestionIndex = 0;
+      state.correctAnswersCount = 0;
+    },
   },
 });
 
@@ -76,6 +84,7 @@ export const {
   getQuestionsFail,
   answerSelection,
   continuePressed,
+  resetState,
 } = questionsSlice.actions;
 
 export default questionsSlice.reducer;

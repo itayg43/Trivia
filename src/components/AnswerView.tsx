@@ -1,5 +1,6 @@
 import React, {useCallback} from 'react';
 import {StyleSheet, Pressable, Text, View} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {useAppDispatch} from '../hooks/useAppDispatch';
 import {useAppSelector} from '../hooks/useAppSelector';
@@ -33,7 +34,21 @@ const AnswerView = ({answer}: Props) => {
 
       {isAnswerSelected && selectedAnswer?.id === answer.id && (
         <View style={styles.isCorrectOverlay}>
-          <Text>{answer.isCorrect ? 'Correct' : 'Incorrect'}</Text>
+          <Text>
+            {answer.isCorrect ? (
+              <MaterialCommunityIcons
+                name="check-circle"
+                size={22}
+                color="green"
+              />
+            ) : (
+              <MaterialCommunityIcons
+                name="alert-circle"
+                size={22}
+                color="red"
+              />
+            )}
+          </Text>
         </View>
       )}
     </Pressable>
